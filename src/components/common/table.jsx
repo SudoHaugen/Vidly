@@ -1,22 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 
-const Table = (props) => {
-  const { coloumns, sortColoumn, onSort, data, onLike, onDelete } = props;
+const Table = ({ columns, sortColumn, onSort, data }) => {
   return (
     <table className="table">
-      <TableHeader
-        coloumns={coloumns}
-        sortColoumn={sortColoumn}
-        onSort={onSort}
-      />
-      <TableBody
-        data={data}
-        onLike={onLike}
-        onDelete={onDelete}
-        coloumns={coloumns}
-      />
+      <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
+      <TableBody columns={columns} data={data} />
     </table>
   );
 };
