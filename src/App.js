@@ -1,20 +1,24 @@
 /** @format */
 import React, { Component } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
-import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from "./components/common/navbar";
 import NotFound from "./components/common/not-found.jsx";
 import MovieForm from "./components/movieform";
+import loginForm from "./components/loginForm";
 
 class App extends Component {
   render() {
     return (
       <main className="container">
-        <NavBar itemList={["Vidly", "Movies", "Customers", "Rentals"]} />
+        <NavBar
+          itemList={["Vidly", "Movies", "Customers", "Rentals", "Login"]}
+        />
         <Switch>
           <Route path="/movies/:id" component={MovieForm} />
+          <Route path="/login" component={loginForm}></Route>
           <Route path="/movies" exact component={Movies} />
           <Route path="/customers" exact component={Customers} />
           <Route path="/rentals" exact component={Rentals} />
