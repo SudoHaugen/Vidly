@@ -8,17 +8,26 @@ import NavBar from "./components/common/navbar";
 import NotFound from "./components/common/not-found.jsx";
 import MovieForm from "./components/movieform";
 import loginForm from "./components/loginForm";
+import registerForm from "./components/registerForm";
 
 class App extends Component {
   render() {
     return (
       <main className="container">
         <NavBar
-          itemList={["Vidly", "Movies", "Customers", "Rentals", "Login"]}
+          itemList={[
+            "Vidly",
+            "Movies",
+            "Customers",
+            "Rentals",
+            "Login",
+            "Register",
+          ]}
         />
         <Switch>
           <Route path="/movies/:id" component={MovieForm} />
           <Route path="/login" component={loginForm}></Route>
+          <Route path="/register" component={registerForm}></Route>
           <Route path="/movies" exact component={Movies} />
           <Route path="/customers" exact component={Customers} />
           <Route path="/rentals" exact component={Rentals} />
