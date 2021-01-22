@@ -1,26 +1,30 @@
 /**@format */
-
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
+import { saveMovie } from "./../services/fakeMovieService";
+import { Redirect } from "react-router-dom";
 
-class MovieForm extends Form {
+class NewMovieForm extends Form {
   state = {
     data: {
-      _id: "",
       title: "",
       genres: getGenres(),
-      activeGenre: "",
-      numberInStock: 0,
-      rate: 0,
+      activeGenre: getGenres()[0].name,
+      numberInStock: "",
+      rate: "",
     },
-    errors: { _id: "", title: "", genre: "", numbersInStock: "", rate: "" },
+    errors: {
+      tile: "",
+      genres: "",
+      activeGenre: "",
+      numbersInStock: "",
+      rate: "",
+    },
   };
 
   schema = {
-    _id: Joi.string().required(),
     title: Joi.string().required(),
     genres: Joi.array().required(),
     activeGenre: Joi.string().required(),
@@ -28,35 +32,19 @@ class MovieForm extends Form {
     rate: Joi.number().min(0).max(10).required(),
   };
 
-  componentDidMount() {
-    let { _id, title, genre, numberInStock, dailyRentalRate } = getMovie(
-      this.props.match.params.id
-    );
-    let { genres } = this.state.data;
-
-    this.setState({
-      data: {
-        _id,
-        title,
-        genres,
-        activeGenre: genre.name,
-        numberInStock,
-        rate: dailyRentalRate,
-      },
-    });
-  }
-
   doSubmit = () => {
-    let { _id, title, activeGenre, numberInStock, rate } = this.state.data;
+    let { title, activeGenre, numberInStock, rate } = this.state.data;
     activeGenre = getGenres().find((g) => g.name === activeGenre);
 
     saveMovie({
-      _id,
+      _id: "",
       title,
       genre: activeGenre,
       numberInStock,
       dailyRentalRate: rate,
     });
+
+    window.location.assign("/movies");
   };
 
   render() {
@@ -64,7 +52,7 @@ class MovieForm extends Form {
 
     return (
       <div>
-        <h1>Movie Form</h1>
+        <h1>Create new movie</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             {this.renderInput("title", "Title", false, "text")}
@@ -82,11 +70,11 @@ class MovieForm extends Form {
             )}
             {this.renderInput("rate", "Rate", false, "text")}
           </div>
-          {this.renderButton("Save")}
+          {this.renderButton("Save", "/movies")}
         </form>
       </div>
     );
   }
 }
 
-export default MovieForm;
+export default NewMovieForm;

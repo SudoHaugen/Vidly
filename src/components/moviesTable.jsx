@@ -40,12 +40,19 @@ class MoviesTable extends Component {
     const { movies, onSort, sortColumn } = this.props;
 
     return (
-      <Table
-        columns={this.columns}
-        data={movies}
-        sortColumn={sortColumn}
-        onSort={onSort}
-      />
+      <div>
+        <Link to={"/movies/new"}>
+          <button type="button" className="btn btn-primary btn-sm">
+            New movie
+          </button>
+        </Link>
+        <Table
+          columns={this.columns}
+          data={movies}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
+      </div>
     );
   }
 }

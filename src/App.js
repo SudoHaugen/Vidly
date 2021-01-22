@@ -9,6 +9,7 @@ import NotFound from "./components/common/not-found.jsx";
 import MovieForm from "./components/movieform";
 import loginForm from "./components/loginForm";
 import registerForm from "./components/registerForm";
+import NewMovieForm from "./components/newMovieForm";
 
 class App extends Component {
   render() {
@@ -25,10 +26,11 @@ class App extends Component {
           ]}
         />
         <Switch>
+          <Route path="/movies/new" exact component={NewMovieForm}></Route>
           <Route path="/movies/:id" component={MovieForm} />
+          <Route path="/movies" exact component={Movies} />
           <Route path="/login" component={loginForm}></Route>
           <Route path="/register" component={registerForm}></Route>
-          <Route path="/movies" exact component={Movies} />
           <Route path="/customers" exact component={Customers} />
           <Route path="/rentals" exact component={Rentals} />
           <Route path="/not-found" component={NotFound} />

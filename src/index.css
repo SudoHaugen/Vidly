@@ -16,3 +16,7 @@ code {
 .clickable {
   cursor: pointer;
 }
+
+.btn.btn-primary.btn-sm {
+  margin: 10px 10px 10px 10px;
+}
