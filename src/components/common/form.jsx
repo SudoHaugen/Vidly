@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Option_input from "./option_input";
+import { Link } from "react-router-dom";
 
 class Form extends Component {
   /**

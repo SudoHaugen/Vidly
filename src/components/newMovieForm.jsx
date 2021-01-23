@@ -4,7 +4,6 @@ import Joi from "joi-browser";
 import Form from "./common/form";
 import { getGenres } from "../services/fakeGenreService";
 import { saveMovie } from "./../services/fakeMovieService";
-import { Redirect } from "react-router-dom";
 
 class NewMovieForm extends Form {
   state = {
@@ -34,6 +33,7 @@ class NewMovieForm extends Form {
 
   doSubmit = () => {
     let { title, activeGenre, numberInStock, rate } = this.state.data;
+    let { history } = this.props;
     activeGenre = getGenres().find((g) => g.name === activeGenre);
 
     saveMovie({
@@ -44,7 +44,7 @@ class NewMovieForm extends Form {
       dailyRentalRate: rate,
     });
 
-    window.location.assign("/movies");
+    history.push("/movies");
   };
 
   render() {

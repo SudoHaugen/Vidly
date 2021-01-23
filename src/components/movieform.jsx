@@ -48,6 +48,7 @@ class MovieForm extends Form {
 
   doSubmit = () => {
     let { _id, title, activeGenre, numberInStock, rate } = this.state.data;
+    let { history } = this.props;
     activeGenre = getGenres().find((g) => g.name === activeGenre);
 
     saveMovie({
@@ -57,6 +58,8 @@ class MovieForm extends Form {
       numberInStock,
       dailyRentalRate: rate,
     });
+
+    history.push("/movies");
   };
 
   render() {
