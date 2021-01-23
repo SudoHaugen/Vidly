@@ -29,6 +29,13 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
+  /**
+   *
+   * @param movie
+   * Event handler for like button
+   * Finds the movie that has been liked and changes its state
+   * Adds state: {liked} to movie
+   */
   handleLike = (movie) => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
