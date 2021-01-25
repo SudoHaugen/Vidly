@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Option_input from "./option_input";
-import { Link } from "react-router-dom";
 
 class Form extends Component {
   /**
@@ -72,11 +71,36 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
+  handleSearchInput = ({ currentTarget: input }) => {
+    const data = { ...this.state.data };
+    data[input.name] = input.value;
+
+    this.setState({ data });
+  };
+
   renderButton(label, path) {
     return (
       <button disabled={this.validate()} className="btn btn-primary">
         {label}
       </button>
+    );
+  }
+
+  renderSearchBar(name, label, focus = false, type = "text", options = [""]) {
+    const { data } = this.state;
+
+    return (
+      <Input
+        type={type}
+        name={name}
+        placeholder={name}
+        defaultValue={data[name]}
+        label={label}
+        onChange={this.handleSearchInput}
+        error={null}
+        autoFocus={focus}
+        options={options}
+      />
     );
   }
 
@@ -91,7 +115,6 @@ class Form extends Component {
       />
     );
   }
-
   renderInput(name, label, focus = false, type = "text", options = [""]) {
     const { data, errors } = this.state;
 

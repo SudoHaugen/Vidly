@@ -24,7 +24,7 @@ class NewMovieForm extends Form {
   };
 
   schema = {
-    title: Joi.string().required(),
+    title: Joi.string().required().label("Title"),
     genres: Joi.array().required(),
     activeGenre: Joi.string().required(),
     numberInStock: Joi.number().min(0).max(100).required(),

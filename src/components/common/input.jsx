@@ -3,7 +3,7 @@
 const Input = ({ name, label, error, defaultValue, options, ...rest }) => {
   return (
     <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+      {label === null ? null : <label htmlFor={name}>{label}</label>}
       <input
         {...rest}
         value={defaultValue}
