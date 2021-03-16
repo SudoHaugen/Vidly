@@ -10,7 +10,6 @@ axios.interceptors.response.use(null, (error) => {
   logger.log(error);
   if (!expectedError) {
     logger.log(error);
-    //toast.error("Something failed while deleting a post!");
   }
   return Promise.reject(error);
 });
