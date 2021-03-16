@@ -3,8 +3,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovieById, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 
 class MovieForm extends Form {
   state = {
@@ -28,10 +28,14 @@ class MovieForm extends Form {
     rate: Joi.number().min(0).max(10).required(),
   };
 
-  componentDidMount() {
-    let { _id, title, genre, numberInStock, dailyRentalRate } = getMovie(
-      this.props.match.params.id
-    );
+  async componentDidMount() {
+    let {
+      _id,
+      title,
+      genre,
+      numberInStock,
+      dailyRentalRate,
+    } = await getMovieById(this.props.match.params.id);
     let { genres } = this.state.data;
 
     this.setState({
@@ -46,12 +50,12 @@ class MovieForm extends Form {
     });
   }
 
-  doSubmit = () => {
+  doSubmit = async () => {
     let { _id, title, activeGenre, numberInStock, rate } = this.state.data;
     let { history } = this.props;
-    activeGenre = getGenres().find((g) => g.name === activeGenre);
+    activeGenre = await getGenres().find((g) => g.name === activeGenre);
 
-    saveMovie({
+    await saveMovie({
       _id,
       title,
       genre: activeGenre,

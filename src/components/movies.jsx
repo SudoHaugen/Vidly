@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import MoviesTable from "./moviesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import config from "../config.json";
+import httpService from "../services/httpService";
 import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom";
 import _ from "lodash";
@@ -22,15 +22,23 @@ class Movies extends Component {
     selectedGenre: null,
   };
 
-  componentDidMount() {
-    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+  async componentDidMount() {
+    const genres = [
+      { _id: "", name: "All Genres" },
+      await httpService.get(config.genresAPI),
+    ];
 
-    this.setState({ movies: getMovies(), genres });
+    const movies = await httpService.get(config.moviesAPI);
+
+    this.setState({ movies: movies.data, genres: genres[1].data });
   }
 
-  handleDelete = (movie) => {
-    const movies = this.state.movies.filter((m) => m._id !== movie._id);
-    this.setState({ movies });
+  handleDelete = async (movie) => {
+    await httpService.delete(config.moviesAPI + `/${movie._id}`);
+
+    let movies = await httpService.get(config.moviesAPI);
+
+    this.setState({ movies: movies.data });
   };
 
   /**

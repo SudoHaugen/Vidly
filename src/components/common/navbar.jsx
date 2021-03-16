@@ -14,7 +14,11 @@ const NavBar = ({ itemList }) => {
         <ul className="navbar-nav">
           {navItems.map((item) => (
             <li className="nav-item">
-              <NavLink className="nav-link" to={`/${item.toLowerCase()}`}>
+              <NavLink
+                className="nav-link"
+                to={`/${item.toLowerCase()}`}
+                key={item.toLowerCase()}
+              >
                 {item}
               </NavLink>
             </li>

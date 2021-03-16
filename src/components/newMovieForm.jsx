@@ -2,15 +2,15 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getGenres } from "../services/fakeGenreService";
-import { saveMovie } from "./../services/fakeMovieService";
+import { saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 
 class NewMovieForm extends Form {
   state = {
     data: {
       title: "",
-      genres: getGenres(),
-      activeGenre: getGenres()[0].name,
+      genres: [],
+      activeGenre: null,
       numberInStock: "",
       rate: "",
     },
@@ -23,6 +23,13 @@ class NewMovieForm extends Form {
     },
   };
 
+  async componentDidMount() {
+    const genres = await getGenres();
+    const activeGenre = genres[0];
+
+    this.setState({ data: { genres, activeGenre } });
+  }
+
   schema = {
     title: Joi.string().required().label("Title"),
     genres: Joi.array().required(),
@@ -31,15 +38,14 @@ class NewMovieForm extends Form {
     rate: Joi.number().min(0).max(10).required(),
   };
 
-  doSubmit = () => {
-    let { title, activeGenre, numberInStock, rate } = this.state.data;
+  doSubmit = async () => {
+    let { title, activeGenre, numberInStock, rate, genres } = this.state.data;
     let { history } = this.props;
-    activeGenre = getGenres().find((g) => g.name === activeGenre);
+    activeGenre = genres.find((g) => g.name === activeGenre);
 
-    saveMovie({
-      _id: "",
+    await saveMovie({
       title,
-      genre: activeGenre,
+      genreId: activeGenre._id,
       numberInStock,
       dailyRentalRate: rate,
     });
