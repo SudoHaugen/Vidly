@@ -1,6 +1,7 @@
 /** @format */
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
@@ -10,11 +11,13 @@ import MovieForm from "./components/movieform";
 import loginForm from "./components/loginForm";
 import registerForm from "./components/registerForm";
 import NewMovieForm from "./components/newMovieForm";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   render() {
     return (
       <main className="container">
+        <ToastContainer />
         <NavBar
           itemList={[
             "Vidly",
