@@ -3,15 +3,15 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovieById, saveMovie } from "../services/movieService";
-import { getGenres } from "../services/genreService";
+import httpService from "../services/httpService";
+import config from "../config.json";
 
 class MovieForm extends Form {
   state = {
     data: {
       _id: "",
       title: "",
-      genres: getGenres(),
+      genres: [],
       activeGenre: "",
       numberInStock: 0,
       rate: 0,
@@ -29,20 +29,17 @@ class MovieForm extends Form {
   };
 
   async componentDidMount() {
-    let {
-      _id,
-      title,
-      genre,
-      numberInStock,
-      dailyRentalRate,
-    } = await getMovieById(this.props.match.params.id);
-    let { genres } = this.state.data;
+    let movie = await httpService.get(
+      config.moviesAPI + `/${this.props.match.params.id}`
+    );
+    let { _id, title, genre, numberInStock, dailyRentalRate } = movie.data;
+    const genres = await httpService.get(config.genresAPI);
 
     this.setState({
       data: {
         _id,
         title,
-        genres,
+        genres: genres.data,
         activeGenre: genre.name,
         numberInStock,
         rate: dailyRentalRate,
@@ -51,14 +48,15 @@ class MovieForm extends Form {
   }
 
   doSubmit = async () => {
-    let { _id, title, activeGenre, numberInStock, rate } = this.state.data;
+    let { _id, title, numberInStock, activeGenre, rate } = this.state.data;
     let { history } = this.props;
-    activeGenre = await getGenres().find((g) => g.name === activeGenre);
+    activeGenre = await httpService
+      .get(config.genresAPI)
+      .then((response) => response.data.find((g) => g.name === activeGenre));
 
-    await saveMovie({
-      _id,
+    await httpService.put(config.moviesAPI + `/${_id}`, {
       title,
-      genre: activeGenre,
+      genreId: activeGenre._id,
       numberInStock,
       dailyRentalRate: rate,
     });
