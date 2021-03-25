@@ -28,17 +28,25 @@ class Movies extends Component {
       await httpService.get(config.genresAPI),
     ];
 
-    const movies = await httpService.get(config.moviesAPI);
+    const movies = await httpService.get(config.moviesAPI).then((response) => {
+      return response.data;
+    });
 
-    this.setState({ movies: movies.data, genres: genres[1].data });
+    this.setState({ movies, genres: genres[1].data });
   }
 
   handleDelete = async (movie) => {
-    await httpService.delete(config.moviesAPI + `/${movie._id}`);
+    try {
+      await httpService.delete(config.moviesAPI + `/${movie._id}`);
 
-    let movies = await httpService.get(config.moviesAPI);
+      let movies = await httpService.get(config.moviesAPI);
 
-    this.setState({ movies: movies.data });
+      this.setState({ movies: movies.data });
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        this.props.history.replace("/not-found");
+      }
+    }
   };
 
   /**

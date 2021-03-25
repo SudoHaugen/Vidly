@@ -28,23 +28,50 @@ class MovieForm extends Form {
     rate: Joi.number().min(0).max(10).required(),
   };
 
-  async componentDidMount() {
-    let movie = await httpService.get(
+  populateMovie = async () => {
+    const {
+      data: { _id, title, genre, numberInStock, dailyRentalRate },
+    } = await httpService.get(
       config.moviesAPI + `/${this.props.match.params.id}`
     );
-    let { _id, title, genre, numberInStock, dailyRentalRate } = movie.data;
-    const genres = await httpService.get(config.genresAPI);
 
     this.setState({
       data: {
         _id,
         title,
-        genres: genres.data,
         activeGenre: genre.name,
+        genres: this.state.data.genres,
         numberInStock,
         rate: dailyRentalRate,
       },
     });
+  };
+
+  populateGenres = async () => {
+    const { data } = await httpService.get(config.genresAPI);
+    const {
+      _id,
+      title,
+      activeGenre,
+      numberInStock,
+      dailyRentalRate,
+    } = this.state.data;
+
+    this.setState({
+      data: {
+        _id,
+        title,
+        activeGenre,
+        genres: data,
+        numberInStock,
+        rate: dailyRentalRate,
+      },
+    });
+  };
+
+  async componentDidMount() {
+    await this.populateMovie();
+    await this.populateGenres();
   }
 
   doSubmit = async () => {
