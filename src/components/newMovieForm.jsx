@@ -55,7 +55,6 @@ class NewMovieForm extends Form {
 
   render() {
     let { genres, activeGenre } = this.state.data;
-    let temp = 0;
 
     return (
       <div>
