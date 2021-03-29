@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import ProtectedRoute from "./components/common/protectedRoute";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
@@ -24,16 +25,17 @@ class App extends Component {
     this.setState({ user });
   }
   render() {
+    const { user } = this.state;
     return (
       <main className="container">
         <ToastContainer />
-        <NavBar user={this.state.user} />
+        <NavBar user={user} />
         <Switch>
-          <Route path="/movies/new" exact component={NewMovieForm}></Route>
-          <Route path="/movies/:id" component={MovieForm} />
+          <ProtectedRoute path="/movies/new" exact component={NewMovieForm} />
+          <ProtectedRoute path="/movies/:id" component={MovieForm} />
+          <ProtectedRoute path="/logout" exact component={Logout} />
           <Route path="/movies" exact component={Movies} />
           <Route path="/login" component={loginForm}></Route>
-          <Route path="/logout" component={Logout}></Route>
           <Route path="/register" component={registerForm}></Route>
           <Route path="/customers" exact component={Customers} />
           <Route path="/rentals" exact component={Rentals} />

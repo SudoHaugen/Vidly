@@ -10,6 +10,7 @@ import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import SearchBox from "./common/searchBox";
+import authService from "../services/authService";
 
 class Movies extends Component {
   state = {
@@ -130,11 +131,13 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
-            <Link to={"/movies/new"}>
-              <button type="button" className="btn btn-primary btn-sm">
-                New movie
-              </button>
-            </Link>
+            {authService.getCurrentUser() && (
+              <Link to={"/movies/new"}>
+                <button type="button" className="btn btn-primary btn-sm">
+                  New movie
+                </button>
+              </Link>
+            )}
             <p>Showing {`${movies.length}`} movies in the database</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <MoviesTable
