@@ -1,0 +1,6 @@
+{
+  "moviesAPI": "http://localhost:3900/api/movies",
+  "genresAPI": "http://localhost:3900/api/genres",
+  "usersAPI": "http://localhost:3900/api/users",
+  "authAPI": "http://localhost:3900/api/auth"
+}
