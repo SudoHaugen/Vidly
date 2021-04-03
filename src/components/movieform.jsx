@@ -4,7 +4,6 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import httpService from "../services/httpService";
-import config from "../config.json";
 
 class MovieForm extends Form {
   state = {
@@ -31,9 +30,7 @@ class MovieForm extends Form {
   populateMovie = async () => {
     const {
       data: { _id, title, genre, numberInStock, dailyRentalRate },
-    } = await httpService.get(
-      config.moviesAPI + `/${this.props.match.params.id}`
-    );
+    } = await httpService.get("/movies" + `/${this.props.match.params.id}`);
 
     this.setState({
       data: {
@@ -48,7 +45,7 @@ class MovieForm extends Form {
   };
 
   populateGenres = async () => {
-    const { data } = await httpService.get(config.genresAPI);
+    const { data } = await httpService.get("/genres");
     const {
       _id,
       title,
@@ -78,10 +75,10 @@ class MovieForm extends Form {
     let { _id, title, numberInStock, activeGenre, rate } = this.state.data;
     let { history } = this.props;
     activeGenre = await httpService
-      .get(config.genresAPI)
+      .get("/genres")
       .then((response) => response.data.find((g) => g.name === activeGenre));
 
-    await httpService.put(config.moviesAPI + `/${_id}`, {
+    await httpService.put("/movies" + `/${_id}`, {
       title,
       genreId: activeGenre._id,
       numberInStock,

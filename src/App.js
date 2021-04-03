@@ -16,6 +16,7 @@ import Logout from "./components/logout";
 import auth from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
 
+console.log("SUPERMAN", process.env.REACT_APP_NAME);
 class App extends Component {
   state = {};
 

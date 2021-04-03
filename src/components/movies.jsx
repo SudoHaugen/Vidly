@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import MoviesTable from "./moviesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import config from "../config.json";
 import httpService from "../services/httpService";
 import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom";
@@ -26,10 +25,10 @@ class Movies extends Component {
   async componentDidMount() {
     const genres = [
       { _id: "", name: "All Genres" },
-      await httpService.get(config.genresAPI),
+      await httpService.get("/genres"),
     ];
 
-    const movies = await httpService.get(config.moviesAPI).then((response) => {
+    const movies = await httpService.get("/movies").then((response) => {
       return response.data;
     });
 
@@ -38,9 +37,9 @@ class Movies extends Component {
 
   handleDelete = async (movie) => {
     try {
-      await httpService.delete(config.moviesAPI + `/${movie._id}`);
+      await httpService.delete("/movies" + `/${movie._id}`);
 
-      let movies = await httpService.get(config.moviesAPI);
+      let movies = await httpService.get("/movies");
 
       this.setState({ movies: movies.data });
     } catch (error) {
@@ -138,7 +137,14 @@ class Movies extends Component {
                 </button>
               </Link>
             )}
-            <p>Showing {`${movies.length}`} movies in the database</p>
+            {`${movies.length}` > 0 ? (
+              <p>Showing {`${movies.length}`} movies in the database</p>
+            ) : (
+              <p>
+                There are no movies in the database that matches the search
+                result
+              </p>
+            )}
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <MoviesTable
               movies={movies}

@@ -3,7 +3,6 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import httpService from "../services/httpService";
-import config from "../config.json";
 
 class NewMovieForm extends Form {
   state = {
@@ -24,7 +23,7 @@ class NewMovieForm extends Form {
   };
 
   async componentDidMount() {
-    const genres = await httpService.get(config.genresAPI);
+    const genres = await httpService.get("/genres");
     const activeGenre = genres.data[0];
 
     this.setState({ data: { genres: genres.data, activeGenre } });
@@ -43,7 +42,7 @@ class NewMovieForm extends Form {
     let { history } = this.props;
     activeGenre = genres.find((g) => g.name === activeGenre);
 
-    await httpService.post(config.moviesAPI, {
+    await httpService.post("/movies", {
       title,
       genreId: activeGenre._id,
       numberInStock,

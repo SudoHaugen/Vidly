@@ -1,7 +1,6 @@
 /**@format */
 
 import httpService from "../services/httpService";
-import { authAPI } from "../config.json";
 import jwtDecode from "jwt-decode";
 
 const tokenKey = "token";
@@ -9,7 +8,7 @@ const tokenKey = "token";
 httpService.setJwt(getJwt());
 
 export async function login(email, password) {
-  const { data: jwt } = await httpService.post(authAPI, { email, password });
+  const { data: jwt } = await httpService.post("/auth", { email, password });
   localStorage.setItem(tokenKey, jwt);
 }
 

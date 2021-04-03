@@ -5,7 +5,6 @@ import Table from "./common/table";
 import Like from "./common/like";
 import { Link } from "react-router-dom";
 import auth from "../services/authService";
-import { push } from "joi-browser";
 
 class MoviesTable extends Component {
   columns = [
